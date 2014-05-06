@@ -2,6 +2,10 @@
 class opw {
     protected $options = false;
 
+    const YEARS = 'years';
+    const DATE = 'date';
+
+
     public function init(){
         add_filter('the_content', array($this, 'the_content'), 900);
         add_action('wp_head', array($this, 'insert_styles'),900);
@@ -66,6 +70,7 @@ padding:.5em;
 ";
         $options->text = __("This post is old!",'opw');
         $options->years = 1;
+        $options->type = opw::YEARS;
         return $options;
     }
 
@@ -85,8 +90,15 @@ padding:.5em;
     protected function _is_old($post){
         $this->getOptions();
         $lastmodified = strtotime($post->post_modified_gmt);
-        if($lastmodified < (time() - ($this->options->years * YEAR_IN_SECONDS))){
-            return true;
+        if($this->options->type == opw::DATE){
+            $d = strtotime($this->options->date);
+            if(($d > 0) && ($lastmodified < strtotime($this->options->date))){
+                return true;
+            }
+        } else {
+            if($lastmodified < (time() - ($this->options->years * YEAR_IN_SECONDS))){
+                return true;
+            }
         }
         return false;
     }

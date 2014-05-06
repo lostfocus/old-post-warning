@@ -12,26 +12,20 @@ class opw_menu {
 
     public function changeSettings($post){
         check_admin_referer( 'opw' );
-        $styles = (isset($_POST['styles'])) ? trim($_POST['styles']) : "";
-        $text = (isset($_POST['text'])) ? trim($_POST['text']) : "";
-        $years = (isset($_POST['years'])) ? trim($_POST['years']) : "";
+        $styles = (isset($_POST['styles'])) ? trim($_POST['styles']) : false;
+        $text = (isset($_POST['text'])) ? trim($_POST['text']) : false;
+        $years = (isset($_POST['years'])) ? trim($_POST['years']) : false;
+        $type = (isset($_POST['type'])) ? trim($_POST['type']) : opw::YEARS;
+        $date = (isset($_POST['date'])) ? trim($_POST['date']) : false;
+
         $oldoptions = $this->opw->getOptions();
         $options = new stdClass();
-        if(trim($styles) != "") {
-            $options->styles = $styles;
-        } else {
-            $options->styles = $oldoptions->styles;
-        }
-        if(trim($text) != "") {
-            $options->text = $text;
-        } else {
-            $options->text = $oldoptions->text;
-        }
-        if(trim($years) != "") {
-            $options->years = $years;
-        } else {
-            $options->years = $oldoptions->years;
-        }
+        $options->styles = $styles;
+        $options->text = $text;
+        $options->years = $years;
+        $options->type = $type;
+        $options->date = $date;
+        $options = (object) array_merge((array) $oldoptions, (array) $options);
         $this->opw->setOptions($options);
     }
 
@@ -39,12 +33,19 @@ class opw_menu {
         $options = $this->opw->getOptions();
         ?>
 <div class="wrap">
+    <style>
+        span.opw_radio {
+            display:inline-block;
+            width: 10%;
+        }
+    </style>
     <h2>Old Post Warning</h2>
     <form method="post">
         <table class='form-table'>
             <tr>
-                <th scope='row'><?php _e("Age (in years)","opw"); ?>:</th>
+                <th scope='row' rowspan="2"><?php _e("Check","opw"); ?>:</th>
                 <td>
+                    <span class="opw_radio"><input type="radio" name="type" value="<?php echo opw::YEARS; ?>"<?php if($options->type == opw::YEARS) { ?> checked="checked"<?php } ?>> <?php _e("Age (in years)","opw"); ?>:</span>
                     <select name="years">
                         <option value="1"<?php if((int)$options->years == 1) echo "selected"; ?>>1</option>
                         <option value="2"<?php if((int)$options->years == 2) echo "selected"; ?>>2</option>
@@ -52,6 +53,12 @@ class opw_menu {
                         <option value="1"<?php if((int)$options->years == 4) echo "selected"; ?>>4</option>
                         <option value="2"<?php if((int)$options->years == 5) echo "selected"; ?>>5</option>
                     </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="opw_radio"><input type="radio" name="type" value="<?php echo opw::DATE; ?>"<?php if($options->type == opw::DATE) { ?> checked="checked"<?php } ?>> <?php _e("Date","opw"); ?>:</span>
+                    <input name="date" type="date" value="<?php echo $options->date; ?>">
                 </td>
             </tr>
             <tr>
