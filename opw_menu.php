@@ -21,6 +21,7 @@ class opw_menu {
         check_admin_referer( 'opw' );
         $styles = (isset($_POST['styles'])) ? trim($_POST['styles']) : "";
         $text = (isset($_POST['text'])) ? trim($_POST['text']) : "";
+        $years = (isset($_POST['years'])) ? trim($_POST['years']) : "";
         $oldoptions = $this->opw->getOptions();
         $options = new stdClass();
         if(trim($styles) != "") {
@@ -33,6 +34,11 @@ class opw_menu {
         } else {
             $options->text = $oldoptions->text;
         }
+        if(trim($years) != "") {
+            $options->years = $years;
+        } else {
+            $options->years = $oldoptions->years;
+        }
         $this->opw->setOptions($options);
     }
 
@@ -43,6 +49,18 @@ class opw_menu {
     <h2>Old Post Warning</h2>
     <form method="post">
         <table class='form-table'>
+            <tr>
+                <th scope='row'><?php _e("Age (in years)","opw"); ?>:</th>
+                <td>
+                    <select name="years">
+                        <option value="1"<?php if((int)$options->years == 1) echo "selected"; ?>>1</option>
+                        <option value="2"<?php if((int)$options->years == 2) echo "selected"; ?>>2</option>
+                        <option value="3"<?php if((int)$options->years == 3) echo "selected"; ?>>3</option>
+                        <option value="1"<?php if((int)$options->years == 4) echo "selected"; ?>>4</option>
+                        <option value="2"<?php if((int)$options->years == 5) echo "selected"; ?>>5</option>
+                    </select>
+                </td>
+            </tr>
             <tr>
                 <th scope='row'><?php _e("Text","opw"); ?>:</th>
                 <td>

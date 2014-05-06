@@ -72,6 +72,7 @@ background-color: #fff5ee;
 padding:.5em;
 ";
         $options->text = __("This post is old!",'opw');
+        $options->years = 1;
         return $options;
     }
 
@@ -89,8 +90,9 @@ padding:.5em;
     }
 
     protected function _is_old($post){
+        $this->getOptions();
         $lastmodified = strtotime($post->post_modified_gmt);
-        if($lastmodified < (time() - YEAR_IN_SECONDS)){
+        if($lastmodified < (time() - ($this->options->years * YEAR_IN_SECONDS))){
             return true;
         }
         return false;
