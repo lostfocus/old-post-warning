@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dominik
- * Date: 05/05/14
- * Time: 14:30
- */
-
 class opw_menu {
     protected $opw = false;
 

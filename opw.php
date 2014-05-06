@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dominik
- * Date: 05/05/14
- * Time: 12:26
- */
-
 class opw {
     protected $options = false;
 

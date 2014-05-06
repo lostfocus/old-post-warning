@@ -2,7 +2,7 @@
 /*
 Plugin Name: Old Post Warning
 Plugin URI: https://github.com/lostfocus/instagram-embed-fix
-Description: Embedding Instagram posts is broken at the moment. This plugin provides a temporary and dirty solution.
+Description: Puts a warning on old wordpress posts
 Version: 0.1
 Author: Dominik Schwind
 Author URI: http://lostfocus.de/
